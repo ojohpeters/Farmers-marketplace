@@ -67,11 +67,6 @@ A full-stack e-commerce web application connecting farmers with buyers across co
 5. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
-## Demo Credentials
-
-### Admin Account
-- **Email**: admin@farmersmarket.com
-- **Password**: password123
 
 ### User Account
 - **Email**: john@example.com
@@ -182,14 +177,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Department of Computer Science, MOUAU (Formerly Benue State University)
 - Inspired by the need to connect local farmers with consumers
 
-## Contact
-
-For questions or support, please contact:
-- **Email**: utillenguemo@gmail.com
-- **Phone**: 08155282910
-- **Address**: MOUAU Campus, Makurdi, Benue State, Nigeria
 
 ---
 
-**Developed by Utillengu Emo — Dept. of Computer Science, MOUAU (Formerly Benue State University)**
-# Farmers-marketplace
+**Developed by Ojoh Peters 

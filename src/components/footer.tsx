@@ -91,10 +91,10 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400">
-            © 2024 Farmers Marketplace. All rights reserved.
+            © 2025 Farmers Marketplace. All rights reserved.
           </p>
           <p className="text-gray-500 text-sm mt-2">
-            Developed by Utillengu Emo — Dept. of Computer Science, MOUAU (Formerly Benue State University)
+            Developed by Utillengu Emo — Dept. of Computer Science and Mathematics, MOUAU (Formerly Benue State University)
           </p>
         </div>
       </div>
