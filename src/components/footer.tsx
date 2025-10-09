@@ -94,7 +94,7 @@ export default function Footer() {
             © 2025 Farmers Marketplace. All rights reserved.
           </p>
           <p className="text-gray-500 text-sm mt-2">
-            Developed by Utillengu Emo — Dept. of Computer Science and Mathematics, MOUAU (Formerly Benue State University)
+            Developed by Utillengu Emo — Dept. of  Mathematics And Computer Science, MOUAU (Formerly Benue State University)
           </p>
         </div>
       </div>
