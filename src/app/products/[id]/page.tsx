@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -29,11 +29,7 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState<Product | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    fetchProduct()
-  }, [params.id])
-
-  const fetchProduct = async () => {
+  const fetchProduct = useCallback(async () => {
     try {
       const response = await fetch(`/api/products/${params.id}`)
       const data = await response.json()
@@ -46,7 +42,11 @@ export default function ProductDetailPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [params.id])
+
+  useEffect(() => {
+    fetchProduct()
+  }, [fetchProduct])
 
   if (isLoading) {
     return (
@@ -65,7 +65,7 @@ export default function ProductDetailPage() {
         <Card className="w-full max-w-md">
           <CardContent className="p-8 text-center">
             <h2 className="text-xl font-semibold mb-4">Product not found</h2>
-            <p className="text-gray-600 mb-6">The product you're looking for doesn't exist.</p>
+            <p className="text-gray-600 mb-6">The product you&apos;re looking for doesn&apos;t exist.</p>
             <Link href="/products">
               <Button className="bg-farm-green-600 hover:bg-farm-green-700">
                 Back to Products
@@ -244,7 +244,7 @@ export default function ProductDetailPage() {
                   <h3 className="font-semibold text-gray-900 mb-4">Nutritional Benefits</h3>
                   <p className="text-gray-600">
                     This product is rich in essential vitamins and minerals, providing numerous health benefits. 
-                    It's grown using sustainable farming practices and is free from harmful pesticides.
+                    It&apos;s grown using sustainable farming practices and is free from harmful pesticides.
                   </p>
                 </div>
               </div>

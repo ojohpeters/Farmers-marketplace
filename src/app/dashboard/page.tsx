@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
@@ -31,17 +31,7 @@ export default function DashboardPage() {
   const router = useRouter()
   const [orders, setOrders] = useState<Order[]>([])
 
-  useEffect(() => {
-    if (status === 'loading') return
-    if (!session) {
-      router.push('/auth/signin')
-      return
-    }
-
-    fetchOrders()
-  }, [session, status, router])
-
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     try {
       const response = await fetch(`/api/orders?userId=${session?.user?.id}`)
       const data = await response.json()
@@ -52,7 +42,17 @@ export default function DashboardPage() {
     } catch (error) {
       console.error('Error fetching orders:', error)
     }
-  }
+  }, [session?.user?.id])
+
+  useEffect(() => {
+    if (status === 'loading') return
+    if (!session) {
+      router.push('/auth/signin')
+      return
+    }
+
+    fetchOrders()
+  }, [session, status, router, fetchOrders])
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -103,7 +103,7 @@ export default function DashboardPage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Welcome back, {session.user?.name}!
           </h1>
-          <p className="text-gray-600">Here's what's happening with your orders</p>
+          <p className="text-gray-600">Here&apos;s what&apos;s happening with your orders</p>
         </div>
 
         {/* Stats */}

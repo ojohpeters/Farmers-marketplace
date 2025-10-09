@@ -16,7 +16,7 @@ export default function Features() {
             Why Choose Farmers Marketplace?
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            We're committed to connecting communities with fresh, local produce
+            We&apos;re committed to connecting communities with fresh, local produce
           </p>
         </div>
 
