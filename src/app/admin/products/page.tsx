@@ -57,6 +57,12 @@ export default function AdminProductsPage() {
     fetchProducts()
   }, [session, status, router])
 
+  // Reset editing state on component mount
+  useEffect(() => {
+    setEditingProduct(null)
+    setShowAddForm(false)
+  }, [])
+
   const fetchProducts = async () => {
     try {
       const [productsResponse, categoriesResponse] = await Promise.all([
@@ -108,7 +114,8 @@ export default function AdminProductsPage() {
     try {
       if (editingProduct) {
         // Update existing product
-        const response = await fetch(`/api/products/${editingProduct._id}`, {
+        const productId = editingProduct.id || editingProduct._id
+        const response = await fetch(`/api/products/${productId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -267,21 +274,24 @@ export default function AdminProductsPage() {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center space-x-4">
-            <Button variant="outline" size="sm" onClick={() => router.push('/admin/dashboard')}>
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Dashboard
+        <div className="mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-center space-x-4">
+              <Button variant="outline" size="sm" onClick={() => router.push('/admin/dashboard')}>
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">Back to Dashboard</span>
+                <span className="sm:hidden">Back</span>
+              </Button>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Product Management</h1>
+            </div>
+            <Button 
+              onClick={() => setShowAddForm(true)}
+              className="w-full sm:w-auto bg-farm-green-600 hover:bg-farm-green-700"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Product
             </Button>
-            <h1 className="text-3xl font-bold text-gray-900">Product Management</h1>
           </div>
-          <Button 
-            onClick={() => setShowAddForm(true)}
-            className="bg-farm-green-600 hover:bg-farm-green-700"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add Product
-          </Button>
         </div>
 
         {/* Filters */}
@@ -506,8 +516,8 @@ export default function AdminProductsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.map((product) => (
             <Card 
-              key={product._id} 
-              className={editingProduct?._id === product._id ? 'ring-2 ring-blue-500 bg-blue-50' : ''}
+              key={product.id || product._id} 
+              className={editingProduct && (editingProduct.id === product.id || editingProduct._id === product._id) ? 'ring-2 ring-blue-500 bg-blue-50' : ''}
             >
               <div className="relative">
                 <Image
@@ -542,17 +552,17 @@ export default function AdminProductsPage() {
                     size="sm"
                     onClick={() => handleEdit(product)}
                     className="flex-1 hover:bg-blue-50"
-                    disabled={editingProduct?._id === product._id}
+                    disabled={editingProduct && (editingProduct.id === product.id || editingProduct._id === product._id)}
                   >
                     <Edit className="w-4 h-4 mr-2" />
-                    {editingProduct?._id === product._id ? 'Editing...' : 'Edit'}
+                    {editingProduct && (editingProduct.id === product.id || editingProduct._id === product._id) ? 'Editing...' : 'Edit'}
                   </Button>
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleDelete(product._id)}
+                    onClick={() => handleDelete(product.id || product._id)}
                     className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                    disabled={editingProduct?._id === product._id}
+                    disabled={editingProduct && (editingProduct.id === product.id || editingProduct._id === product._id)}
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
