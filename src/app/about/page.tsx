@@ -12,7 +12,7 @@ export default function AboutPage() {
             About Farmers Marketplace
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We're on a mission to connect farmers and buyers, creating a sustainable 
+            We&apos;re on a mission to connect farmers and buyers, creating a sustainable 
             ecosystem that benefits everyone in the agricultural community.
           </p>
         </div>
@@ -35,7 +35,7 @@ export default function AboutPage() {
                 both problems by creating a direct connection between farm and table.
               </p>
               <p className="text-gray-600">
-                Today, we're proud to support hundreds of local farmers and serve thousands of 
+                Today, we&apos;re proud to support hundreds of local farmers and serve thousands of 
                 customers across our communities, making fresh, sustainable agriculture accessible to all.
               </p>
             </div>
@@ -157,7 +157,7 @@ export default function AboutPage() {
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">Meet Our Team</h2>
           <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-            We're a passionate team of developers, farmers, and food enthusiasts 
+            We&apos;re a passionate team of developers, farmers, and food enthusiasts 
             dedicated to revolutionizing the agricultural marketplace.
           </p>
           <Button className="bg-farm-green-600 hover:bg-farm-green-700">

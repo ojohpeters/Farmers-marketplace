@@ -1,5 +1,9 @@
 import mongoose from 'mongoose'
 
+declare global {
+  var mongoose: any
+}
+
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://petersojochegbe_db_user:rNQEdLAt50lKAO1b@cluster0.f9fk9i4.mongodb.net/agricom'
 
 if (!MONGODB_URI) {

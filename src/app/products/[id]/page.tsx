@@ -11,15 +11,15 @@ import { useCart } from '@/contexts/cart-context'
 import { ShoppingCart, ArrowLeft, Plus, Minus, Star, Truck, Shield, Leaf } from 'lucide-react'
 
 interface Product {
-  _id: string
+  id: string
   name: string
   description: string
   price: number
   category: string
   quantity: number
   image: string
-  createdAt: string
-  updatedAt: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export default function ProductDetailPage() {

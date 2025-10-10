@@ -28,7 +28,19 @@ export async function GET(request: NextRequest) {
     
     const products = await Product.find(query).sort({ createdAt: -1 })
     
-    return NextResponse.json({ success: true, data: products })
+    const formattedProducts = products.map(product => ({
+      id: product._id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      category: product.category,
+      quantity: product.quantity,
+      image: product.image,
+      createdAt: new Date(product.createdAt),
+      updatedAt: new Date(product.updatedAt)
+    }))
+    
+    return NextResponse.json({ success: true, data: formattedProducts })
   } catch (error) {
     console.error('Error fetching products:', error)
     return NextResponse.json(
@@ -64,7 +76,20 @@ export async function POST(request: NextRequest) {
     await product.save()
     
     return NextResponse.json(
-      { success: true, data: product },
+      { 
+        success: true, 
+        data: {
+          id: product._id,
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          category: product.category,
+          quantity: product.quantity,
+          image: product.image,
+          createdAt: product.createdAt,
+          updatedAt: product.updatedAt
+        }
+      },
       { status: 201 }
     )
   } catch (error) {

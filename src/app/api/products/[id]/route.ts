@@ -18,7 +18,20 @@ export async function GET(
       )
     }
     
-    return NextResponse.json({ success: true, data: product })
+    return NextResponse.json({ 
+      success: true, 
+      data: {
+        id: product._id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        category: product.category,
+        quantity: product.quantity,
+        image: product.image,
+        createdAt: new Date(product.createdAt),
+        updatedAt: new Date(product.updatedAt)
+      }
+    })
   } catch (error) {
     console.error('Error fetching product:', error)
     return NextResponse.json(
@@ -65,7 +78,20 @@ export async function PUT(
       )
     }
     
-    return NextResponse.json({ success: true, data: product })
+    return NextResponse.json({ 
+      success: true, 
+      data: {
+        id: product._id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        category: product.category,
+        quantity: product.quantity,
+        image: product.image,
+        createdAt: new Date(product.createdAt),
+        updatedAt: new Date(product.updatedAt)
+      }
+    })
   } catch (error) {
     console.error('Error updating product:', error)
     return NextResponse.json(

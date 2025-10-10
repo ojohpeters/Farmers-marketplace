@@ -42,6 +42,12 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!session) {
+      router.push('/auth/signin')
+      return
+    }
+    
     setIsProcessing(true)
 
     // Simulate payment processing
