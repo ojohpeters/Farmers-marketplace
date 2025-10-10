@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
@@ -5,9 +7,18 @@ import { Button } from '@/components/ui/button'
 import { formatPrice } from '@/lib/utils'
 import { products } from '@/data/mockData'
 import { ShoppingCart, ArrowRight } from 'lucide-react'
+import { useCart } from '@/contexts/cart-context'
 
 export default function ProductShowcase() {
+  const { dispatch } = useCart()
   const featuredProducts = products.slice(0, 6)
+
+  const handleAddToCart = (product: any) => {
+    dispatch({
+      type: 'ADD_ITEM',
+      payload: { product, quantity: 1 }
+    })
+  }
 
   return (
     <section className="py-20 bg-white">
@@ -53,7 +64,10 @@ export default function ProductShowcase() {
                 </div>
               </CardContent>
               <CardFooter className="p-6 pt-0">
-                <Button className="w-full bg-farm-green-600 hover:bg-farm-green-700">
+                <Button 
+                  className="w-full bg-farm-green-600 hover:bg-farm-green-700"
+                  onClick={() => handleAddToCart(product)}
+                >
                   <ShoppingCart className="w-4 h-4 mr-2" />
                   Add to Cart
                 </Button>

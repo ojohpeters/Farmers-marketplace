@@ -122,6 +122,15 @@ export default function AdminProductsPage() {
           await fetchProducts() // Refresh products
           setEditingProduct(null)
           setShowAddForm(false)
+          // Reset form
+          setFormData({
+            name: '',
+            description: '',
+            price: '',
+            category: '',
+            quantity: '',
+            image: ''
+          })
         } else {
           alert('Failed to update product: ' + data.error)
         }
@@ -140,20 +149,19 @@ export default function AdminProductsPage() {
         if (data.success) {
           await fetchProducts() // Refresh products
           setShowAddForm(false)
+          // Reset form
+          setFormData({
+            name: '',
+            description: '',
+            price: '',
+            category: '',
+            quantity: '',
+            image: ''
+          })
         } else {
           alert('Failed to create product: ' + data.error)
         }
       }
-      
-      // Reset form
-      setFormData({
-        name: '',
-        description: '',
-        price: '',
-        category: '',
-        quantity: '',
-        image: ''
-      })
     } catch (error) {
       console.error('Error saving product:', error)
       alert('An error occurred while saving the product')
