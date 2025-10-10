@@ -127,11 +127,6 @@ export default function SignIn() {
               </p>
             </div>
 
-            <div className="mt-4 p-4 bg-gray-50 rounded-md">
-              <p className="text-xs text-gray-600 mb-2">Demo credentials:</p>
-              <p className="text-xs text-gray-600">Admin: admin@farmersmarket.com / password123</p>
-              <p className="text-xs text-gray-600">User: john@example.com / password123</p>
-            </div>
           </CardContent>
         </Card>
       </div>

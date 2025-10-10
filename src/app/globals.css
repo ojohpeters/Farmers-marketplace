@@ -56,4 +56,36 @@
   body {
     @apply bg-background text-foreground;
   }
+  html {
+    overflow-x: hidden;
+  }
+  body {
+    overflow-x: hidden;
+  }
+}
+
+@layer utilities {
+  .container {
+    @apply mx-auto px-4 sm:px-6 lg:px-8;
+    max-width: 100%;
+  }
+  
+  .prevent-scroll {
+    overflow-x: hidden;
+  }
+  
+  /* Prevent horizontal scrolling */
+  .no-scroll-x {
+    overflow-x: hidden;
+  }
+  
+  /* Responsive text sizing */
+  .responsive-text {
+    @apply text-sm xs:text-base sm:text-lg;
+  }
+  
+  /* Mobile-first spacing */
+  .mobile-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
 }
