@@ -224,7 +224,7 @@ export default function AdminDashboard() {
             <CardContent>
               <div className="space-y-4">
                 {products.slice(0, 5).map((product) => (
-                  <div key={product._id} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div key={product.id} className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center space-x-3">
                       <div className="w-12 h-12 bg-gray-200 rounded-lg"></div>
                       <div>
@@ -236,7 +236,7 @@ export default function AdminDashboard() {
                       <Button 
                         variant="outline" 
                         size="sm"
-                        onClick={() => router.push(`/products/${product._id}`)}
+                        onClick={() => router.push(`/products/${product.id}`)}
                       >
                         <Eye className="w-4 h-4" />
                       </Button>
