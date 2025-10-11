@@ -8,7 +8,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { formatPrice } from '@/lib/utils'
-import { orders } from '@/data/mockData'
 import { 
   Search, 
   ArrowLeft,
@@ -25,6 +24,22 @@ export default function AdminOrdersPage() {
   const [localOrders, setLocalOrders] = useState<any[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedStatus, setSelectedStatus] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+
+  const fetchOrders = async () => {
+    try {
+      const response = await fetch('/api/orders')
+      const data = await response.json()
+      
+      if (data.success) {
+        setLocalOrders(data.data)
+      }
+    } catch (error) {
+      console.error('Error fetching orders:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   useEffect(() => {
     if (status === 'loading') return
@@ -37,35 +52,44 @@ export default function AdminOrdersPage() {
       return
     }
 
-    // Load orders from localStorage
-    const savedOrders = JSON.parse(localStorage.getItem('orders') || '[]')
-    setLocalOrders([...orders, ...savedOrders])
+    fetchOrders()
   }, [session, status, router])
 
   const filteredOrders = localOrders.filter(order => {
-    const matchesSearch = order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch = order._id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          order.user?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          order.user?.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         order.trackingId.toLowerCase().includes(searchTerm.toLowerCase())
+                         order.trackingId?.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesStatus = !selectedStatus || order.status === selectedStatus
     return matchesSearch && matchesStatus
   })
 
-  const updateOrderStatus = (orderId: string, newStatus: string) => {
-    setLocalOrders(orders => orders.map(order => 
-      order.id === orderId 
-        ? { ...order, status: newStatus, updatedAt: new Date() }
-        : order
-    ))
+  const updateOrderStatus = async (orderId: string, newStatus: string) => {
+    try {
+      const response = await fetch(`/api/orders/${orderId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: newStatus }),
+      })
 
-    // Also update in localStorage if it exists there
-    const savedOrders = JSON.parse(localStorage.getItem('orders') || '[]')
-    const updatedSavedOrders = savedOrders.map((order: any) => 
-      order.id === orderId 
-        ? { ...order, status: newStatus, updatedAt: new Date() }
-        : order
-    )
-    localStorage.setItem('orders', JSON.stringify(updatedSavedOrders))
+      const data = await response.json()
+      
+      if (data.success) {
+        // Update local state
+        setLocalOrders(orders => orders.map(order => 
+          order._id === orderId 
+            ? { ...order, status: newStatus, updatedAt: new Date() }
+            : order
+        ))
+      } else {
+        alert('Failed to update order status: ' + data.error)
+      }
+    } catch (error) {
+      console.error('Error updating order status:', error)
+      alert('An error occurred while updating the order status')
+    }
   }
 
   const getStatusIcon = (status: string) => {
@@ -98,7 +122,7 @@ export default function AdminOrdersPage() {
     return localOrders.reduce((sum, order) => sum + order.total, 0)
   }
 
-  if (status === 'loading') {
+  if (status === 'loading' || isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -227,11 +251,11 @@ export default function AdminOrdersPage() {
         {/* Orders List */}
         <div className="space-y-6">
           {filteredOrders.map((order) => (
-            <Card key={order.id}>
+            <Card key={order._id}>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Order #{order.id}</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">Order #{order._id.slice(-8)}</h3>
                     <p className="text-sm text-gray-600">
                       Customer: {order.user?.name || 'Unknown'} • {order.user?.email || 'No email'}
                     </p>
@@ -297,7 +321,7 @@ export default function AdminOrdersPage() {
                         <Button
                           size="sm"
                           variant={order.status === 'pending' ? 'default' : 'outline'}
-                          onClick={() => updateOrderStatus(order.id, 'pending')}
+                          onClick={() => updateOrderStatus(order._id, 'pending')}
                           className={order.status === 'pending' ? 'bg-yellow-600 hover:bg-yellow-700' : ''}
                         >
                           Pending
@@ -305,7 +329,7 @@ export default function AdminOrdersPage() {
                         <Button
                           size="sm"
                           variant={order.status === 'processing' ? 'default' : 'outline'}
-                          onClick={() => updateOrderStatus(order.id, 'processing')}
+                          onClick={() => updateOrderStatus(order._id, 'processing')}
                           className={order.status === 'processing' ? 'bg-blue-600 hover:bg-blue-700' : ''}
                         >
                           Processing
@@ -313,7 +337,7 @@ export default function AdminOrdersPage() {
                         <Button
                           size="sm"
                           variant={order.status === 'delivered' ? 'default' : 'outline'}
-                          onClick={() => updateOrderStatus(order.id, 'delivered')}
+                          onClick={() => updateOrderStatus(order._id, 'delivered')}
                           className={order.status === 'delivered' ? 'bg-green-600 hover:bg-green-700' : ''}
                         >
                           Delivered
