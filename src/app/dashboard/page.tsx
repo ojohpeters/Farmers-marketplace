@@ -97,7 +97,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
@@ -171,26 +171,33 @@ export default function DashboardPage() {
                 </Button>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {orders.map((order) => (
-                  <div key={order._id} className="border rounded-lg p-3 sm:p-4">
+                  <div key={order._id} className="border rounded-lg p-3 sm:p-4 bg-white shadow-sm">
                     {/* Mobile-first header */}
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 space-y-2 sm:space-y-0">
-                      <div className="min-w-0 flex-1">
-                        <h3 className="font-semibold text-gray-900 text-sm sm:text-base truncate">
-                          Order #{order._id.slice(-8)}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-gray-600">
-                          {new Date(order.createdAt).toLocaleDateString()}
-                        </p>
+                    <div className="space-y-3 mb-4">
+                      {/* Order info row */}
+                      <div className="flex items-start justify-between">
+                        <div className="min-w-0 flex-1 pr-2">
+                          <h3 className="font-semibold text-gray-900 text-sm sm:text-base truncate">
+                            Order #{order._id.slice(-8)}
+                          </h3>
+                          <p className="text-xs sm:text-sm text-gray-600">
+                            {new Date(order.createdAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <div className="flex-shrink-0 text-right">
+                          <p className="font-semibold text-gray-900 text-sm sm:text-base whitespace-nowrap">
+                            {formatPrice(order.total)}
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex items-center justify-between sm:flex-col sm:items-end sm:space-y-1">
-                        <p className="font-semibold text-gray-900 text-sm sm:text-base">
-                          {formatPrice(order.total)}
-                        </p>
-                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
+                      
+                      {/* Status row - full width on mobile */}
+                      <div className="flex items-center justify-center sm:justify-end">
+                        <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
                           {getStatusIcon(order.status)}
-                          <span className="ml-1 capitalize">{order.status}</span>
+                          <span className="ml-1.5 capitalize">{order.status}</span>
                         </span>
                       </div>
                     </div>
@@ -200,7 +207,7 @@ export default function DashboardPage() {
                       {/* Items Section */}
                       <div>
                         <h4 className="font-medium text-gray-900 mb-2 text-sm sm:text-base">Items</h4>
-                        <div className="space-y-2">
+                        <div className="space-y-3">
                           {order.items.map((item, index) => (
                             <div key={index} className="flex items-center space-x-2 sm:space-x-3">
                               <div className="relative w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0">
@@ -211,15 +218,17 @@ export default function DashboardPage() {
                                   className="object-cover rounded"
                                 />
                               </div>
-                              <div className="flex-1 min-w-0">
+                              <div className="flex-1 min-w-0 pr-2">
                                 <p className="text-xs sm:text-sm font-medium text-gray-900 truncate">
                                   {item.product.name}
                                 </p>
                                 <p className="text-xs text-gray-600">Qty: {item.quantity}</p>
                               </div>
-                              <p className="text-xs sm:text-sm font-medium text-gray-900 flex-shrink-0">
-                                {formatPrice(item.product.price * item.quantity)}
-                              </p>
+                              <div className="flex-shrink-0 text-right">
+                                <p className="text-xs sm:text-sm font-medium text-gray-900 whitespace-nowrap">
+                                  {formatPrice(item.product.price * item.quantity)}
+                                </p>
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -228,19 +237,33 @@ export default function DashboardPage() {
                       {/* Tracking Section */}
                       <div className="mt-4 sm:mt-0">
                         <h4 className="font-medium text-gray-900 mb-2 text-sm sm:text-base">Tracking</h4>
-                        <div className="space-y-1">
-                          <p className="text-xs sm:text-sm text-gray-600 break-all">
-                            ID: {order.trackingId}
-                          </p>
-                          {order.status === 'delivered' && (
-                            <p className="text-xs sm:text-sm text-green-600">✓ Delivered successfully</p>
-                          )}
-                          {order.status === 'processing' && (
-                            <p className="text-xs sm:text-sm text-blue-600">🚚 Being prepared for shipment</p>
-                          )}
-                          {order.status === 'pending' && (
-                            <p className="text-xs sm:text-sm text-yellow-600">⏳ Order confirmed, processing...</p>
-                          )}
+                        <div className="space-y-2">
+                          <div className="bg-gray-50 rounded-md p-2">
+                            <p className="text-xs text-gray-500 mb-1">Tracking ID</p>
+                            <p className="text-xs sm:text-sm text-gray-900 font-mono break-all">
+                              {order.trackingId}
+                            </p>
+                          </div>
+                          <div className="space-y-1">
+                            {order.status === 'delivered' && (
+                              <div className="flex items-center space-x-2">
+                                <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
+                                <p className="text-xs sm:text-sm text-green-600">Delivered successfully</p>
+                              </div>
+                            )}
+                            {order.status === 'processing' && (
+                              <div className="flex items-center space-x-2">
+                                <Truck className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                                <p className="text-xs sm:text-sm text-blue-600">Being prepared for shipment</p>
+                              </div>
+                            )}
+                            {order.status === 'pending' && (
+                              <div className="flex items-center space-x-2">
+                                <Clock className="w-4 h-4 text-yellow-600 flex-shrink-0" />
+                                <p className="text-xs sm:text-sm text-yellow-600">Order confirmed, processing...</p>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
