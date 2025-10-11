@@ -10,12 +10,14 @@
     "seed": "tsx src/scripts/seedDatabase.ts"
   },
   "dependencies": {
+    "@types/multer": "^2.0.0",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "lucide-react": "^0.294.0",
     "mongodb": "^6.20.0",
     "mongoose": "^8.19.1",
+    "multer": "^2.0.2",
     "next": "14.0.0",
     "next-auth": "^4.24.5",
     "react": "^18",

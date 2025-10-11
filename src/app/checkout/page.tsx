@@ -50,44 +50,48 @@ export default function CheckoutPage() {
     
     setIsProcessing(true)
 
-    // Simulate payment processing
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    try {
+      // Simulate payment processing with a more realistic delay
+      await new Promise(resolve => setTimeout(resolve, 3000))
 
-    // Create order in MongoDB
-    const orderData = {
-      userId: session.user?.id,
-      user: {
-        id: session.user?.id,
-        name: session.user?.name,
-        email: session.user?.email
-      },
-      items: cart.items,
-      total: cart.total,
-      shippingAddress: formData
-    }
+      // Create order in MongoDB
+      const orderData = {
+        userId: session.user?.id,
+        user: {
+          id: session.user?.id,
+          name: session.user?.name,
+          email: session.user?.email
+        },
+        items: cart.items,
+        total: cart.total,
+        shippingAddress: formData
+      }
 
-    const response = await fetch('/api/orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(orderData),
-    })
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+      })
 
-    const data = await response.json()
-    
-    if (!data.success) {
-      alert('Failed to create order: ' + data.error)
+      const data = await response.json()
+      
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to create order')
+      }
+
+      const order = data.data
+
+      setOrderId(order._id)
+      setShowSuccess(true)
+      dispatch({ type: 'CLEAR_CART' })
+    } catch (error) {
+      console.error('Checkout error:', error)
+      alert('There was an error processing your order. Please try again.')
+    } finally {
       setIsProcessing(false)
-      return
     }
-
-    const order = data.data
-
-    setOrderId(order._id)
-    setShowSuccess(true)
-    dispatch({ type: 'CLEAR_CART' })
-    setIsProcessing(false)
   }
 
   if (!session) {
@@ -124,27 +128,130 @@ export default function CheckoutPage() {
 
   if (showSuccess) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardContent className="p-8 text-center">
-            <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Payment Successful!</h2>
-            <p className="text-gray-600 mb-4">
-              Your order has been placed successfully. Order ID: #{orderId}
-            </p>
-            <p className="text-sm text-gray-500 mb-6">
-              You will receive a confirmation email shortly.
-            </p>
-            <div className="space-y-2">
-              <Button onClick={() => router.push('/dashboard')} className="w-full bg-farm-green-600 hover:bg-farm-green-700">
-                View Orders
-              </Button>
-              <Button onClick={() => router.push('/products')} variant="outline" className="w-full">
-                Continue Shopping
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
+        <div className="max-w-2xl w-full">
+          <Card className="overflow-hidden shadow-2xl border-0">
+            <CardContent className="p-0">
+              {/* Success Animation Header */}
+              <div className="bg-gradient-to-r from-green-500 to-green-600 p-8 text-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-white opacity-10 animate-pulse"></div>
+                <div className="relative z-10">
+                  <div className="inline-flex items-center justify-center w-24 h-24 bg-white bg-opacity-20 rounded-full mb-6 animate-bounce">
+                    <CheckCircle className="w-12 h-12 text-white animate-pulse" />
+                  </div>
+                  <h1 className="text-3xl font-bold text-white mb-2 animate-fade-in">
+                    🎉 Payment Successful!
+                  </h1>
+                  <p className="text-green-100 text-lg animate-slide-up">
+                    Your order has been confirmed and is being processed
+                  </p>
+                </div>
+                
+                {/* Floating particles animation */}
+                <div className="absolute top-4 left-4 w-2 h-2 bg-white rounded-full animate-float opacity-60"></div>
+                <div className="absolute top-8 right-8 w-1 h-1 bg-white rounded-full animate-float-delayed opacity-40"></div>
+                <div className="absolute bottom-8 left-8 w-1.5 h-1.5 bg-white rounded-full animate-float-slow opacity-50"></div>
+                <div className="absolute bottom-4 right-4 w-2 h-2 bg-white rounded-full animate-float opacity-30"></div>
+              </div>
+
+              {/* Order Details */}
+              <div className="p-8 space-y-6">
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+                    <span className="text-2xl">📦</span>
+                  </div>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                    Order #{orderId}
+                  </h2>
+                  <p className="text-gray-600">
+                    Thank you for your purchase! Your fresh farm products are on their way.
+                  </p>
+                </div>
+
+                {/* Status Timeline */}
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-gray-900 text-center">What happens next?</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+                      <div className="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                        <CheckCircle className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900">Order Confirmed</p>
+                        <p className="text-sm text-gray-600">Payment processed successfully</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
+                      <div className="flex-shrink-0 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                        <span className="text-white text-sm">📋</span>
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900">Processing</p>
+                        <p className="text-sm text-gray-600">Your order is being prepared for shipment</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-3 p-3 bg-yellow-50 rounded-lg">
+                      <div className="flex-shrink-0 w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
+                        <span className="text-white text-sm">🚚</span>
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900">Shipping</p>
+                        <p className="text-sm text-gray-600">Your goods will be shipped within 24-48 hours</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                      <div className="flex-shrink-0 w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center">
+                        <span className="text-white text-sm">🏠</span>
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900">Delivery</p>
+                        <p className="text-sm text-gray-600">Track your order on your dashboard</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Important Notes */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h4 className="font-semibold text-blue-900 mb-2">📧 Important:</h4>
+                  <ul className="text-sm text-blue-800 space-y-1">
+                    <li>• You'll receive a confirmation email shortly</li>
+                    <li>• Track your order status in your dashboard</li>
+                    <li>• Delivery typically takes 24-48 hours</li>
+                    <li>• Contact support if you have any questions</li>
+                  </ul>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                  <Button 
+                    onClick={() => router.push('/dashboard')} 
+                    className="bg-farm-green-600 hover:bg-farm-green-700 h-12 text-lg font-medium transform hover:scale-105 transition-all duration-200"
+                  >
+                    📊 View Dashboard
+                  </Button>
+                  <Button 
+                    onClick={() => router.push('/products')} 
+                    variant="outline" 
+                    className="h-12 text-lg font-medium border-2 hover:bg-gray-50 transform hover:scale-105 transition-all duration-200"
+                  >
+                    🛒 Continue Shopping
+                  </Button>
+                </div>
+
+                {/* Thank you message */}
+                <div className="text-center pt-4 border-t">
+                  <p className="text-gray-600 text-sm">
+                    Thank you for choosing our farm-fresh products! 🌱
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     )
   }
@@ -342,9 +449,16 @@ export default function CheckoutPage() {
                     <Button
                       type="submit"
                       disabled={isProcessing}
-                      className="w-full bg-farm-green-600 hover:bg-farm-green-700"
+                      className="w-full bg-farm-green-600 hover:bg-farm-green-700 h-12 text-lg font-medium"
                     >
-                      {isProcessing ? 'Processing Payment...' : 'Place Order'}
+                      {isProcessing ? (
+                        <div className="flex items-center space-x-2">
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                          <span>Processing Payment...</span>
+                        </div>
+                      ) : (
+                        '🚀 Place Order'
+                      )}
                     </Button>
                   </div>
                 </CardContent>

@@ -6,6 +6,7 @@ A full-stack e-commerce web application connecting farmers with buyers across co
 
 ### 👨‍🌾 For Farmers (Admin)
 - **Product Management**: Add, edit, and delete farm products
+- **Image Upload**: Upload product images or use URLs with preview functionality
 - **Order Tracking**: View and manage customer orders
 - **Dashboard Analytics**: Track sales, revenue, and performance metrics
 - **Inventory Management**: Monitor product quantities and availability
@@ -154,7 +155,12 @@ npm start
 - Order history in user dashboard
 
 ### Admin Features
-- Product CRUD operations
+- Product CRUD operations with dual image upload options
+- **Image Upload Options**:
+  - Upload local images (JPEG, PNG, WebP, GIF - max 5MB)
+  - Use external URLs with auto-conversion for Unsplash links
+  - Live image preview and validation
+  - Automatic image optimization with Next.js
 - Order management and status updates
 - Dashboard with analytics and statistics
 - User management capabilities

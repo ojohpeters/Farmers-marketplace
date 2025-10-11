@@ -11,15 +11,15 @@ import { ShoppingCart, Search, Filter } from 'lucide-react'
 import { useCart } from '@/contexts/cart-context'
 
 interface Product {
-  _id: string
+  id: string
   name: string
   description: string
   price: number
   category: string
   quantity: number
   image: string
-  createdAt: string
-  updatedAt: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export default function ProductsPage() {
@@ -134,7 +134,7 @@ export default function ProductsPage() {
             {/* Products Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product) => (
-                <Card key={product._id} className="group hover:shadow-lg transition-shadow duration-300">
+                <Card key={product.id} className="group hover:shadow-lg transition-shadow duration-300">
               <div className="relative overflow-hidden">
                 <Image
                   src={product.image}
@@ -165,7 +165,7 @@ export default function ProductsPage() {
               </CardContent>
               <CardFooter className="p-4 pt-0">
                 <div className="flex gap-2 w-full">
-                  <Link href={`/products/${product._id}`} className="flex-1">
+                  <Link href={`/products/${product.id}`} className="flex-1">
                     <Button variant="outline" className="w-full">
                       View Details
                     </Button>

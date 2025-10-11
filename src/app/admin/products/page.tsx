@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { formatPrice } from '@/lib/utils'
 import { convertUnsplashUrl, validateImageUrl } from '@/lib/imageUtils'
+import { ImageUpload } from '@/components/ui/image-upload'
 import { 
   Plus, 
   Edit, 
@@ -95,12 +96,7 @@ export default function AdminProductsPage() {
   })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    let value = e.target.value
-    
-    // Auto-convert Unsplash URLs when user types in image field
-    if (e.target.name === 'image' && value.includes('unsplash.com/photos/')) {
-      value = convertUnsplashUrl(value)
-    }
+    const value = e.target.value
     
     setFormData({
       ...formData,
@@ -418,22 +414,12 @@ export default function AdminProductsPage() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="image">Image URL</Label>
-                    <Input
-                      id="image"
-                      name="image"
+                    <Label htmlFor="image">Product Image</Label>
+                    <ImageUpload
                       value={formData.image}
-                      onChange={handleInputChange}
+                      onChange={(url) => setFormData({ ...formData, image: url })}
                       placeholder="https://images.unsplash.com/photo-..."
-                      required
                     />
-                    <div className="text-xs text-gray-500 mt-1 space-y-1">
-                      <p><strong>Supported formats:</strong></p>
-                      <p>• <code>https://images.unsplash.com/photo-...</code></p>
-                      <p>• <code>https://unsplash.com/photos/...</code> (auto-converts)</p>
-                      <p>• <code>https://via.placeholder.com/300x200</code></p>
-                      <p>• <code>https://picsum.photos/400/300</code></p>
-                    </div>
                   </div>
                 </div>
 
