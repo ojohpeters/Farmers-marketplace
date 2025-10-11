@@ -110,7 +110,7 @@ export default function CheckoutPage() {
     )
   }
 
-  if (cart.items.length === 0) {
+  if (cart.items.length === 0 && !showSuccess) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <Card className="w-full max-w-md">

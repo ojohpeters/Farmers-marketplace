@@ -99,38 +99,38 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
             Welcome back, {session.user?.name}!
           </h1>
-          <p className="text-gray-600">Here&apos;s what&apos;s happening with your orders</p>
+          <p className="text-sm sm:text-base text-gray-600">Here&apos;s what&apos;s happening with your orders</p>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <Card>
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center">
                 <div className="p-2 bg-farm-green-100 rounded-lg">
-                  <ShoppingBag className="w-6 h-6 text-farm-green-600" />
+                  <ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6 text-farm-green-600" />
                 </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Orders</p>
-                  <p className="text-2xl font-bold text-gray-900">{orders.length}</p>
+                <div className="ml-3 sm:ml-4">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600">Total Orders</p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900">{orders.length}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center">
                 <div className="p-2 bg-blue-100 rounded-lg">
-                  <Package className="w-6 h-6 text-blue-600" />
+                  <Package className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
                 </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Active Orders</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                <div className="ml-3 sm:ml-4">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600">Active Orders</p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900">
                     {orders.filter(order => order.status !== 'delivered').length}
                   </p>
                 </div>
@@ -138,15 +138,15 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
+          <Card className="sm:col-span-2 lg:col-span-1">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center">
                 <div className="p-2 bg-green-100 rounded-lg">
-                  <CheckCircle className="w-6 h-6 text-green-600" />
+                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
                 </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Delivered</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                <div className="ml-3 sm:ml-4">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600">Delivered</p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900">
                     {orders.filter(order => order.status === 'delivered').length}
                   </p>
                 </div>
@@ -173,30 +173,37 @@ export default function DashboardPage() {
             ) : (
               <div className="space-y-4">
                 {orders.map((order) => (
-                  <div key={order._id} className="border rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-4">
-                      <div>
-                        <h3 className="font-semibold text-gray-900">Order #{order._id}</h3>
-                        <p className="text-sm text-gray-600">
-                          Placed on {new Date(order.createdAt).toLocaleDateString()}
+                  <div key={order._id} className="border rounded-lg p-3 sm:p-4">
+                    {/* Mobile-first header */}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 space-y-2 sm:space-y-0">
+                      <div className="min-w-0 flex-1">
+                        <h3 className="font-semibold text-gray-900 text-sm sm:text-base truncate">
+                          Order #{order._id.slice(-8)}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-gray-600">
+                          {new Date(order.createdAt).toLocaleDateString()}
                         </p>
                       </div>
-                      <div className="text-right">
-                        <p className="font-semibold text-gray-900">{formatPrice(order.total)}</p>
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
+                      <div className="flex items-center justify-between sm:flex-col sm:items-end sm:space-y-1">
+                        <p className="font-semibold text-gray-900 text-sm sm:text-base">
+                          {formatPrice(order.total)}
+                        </p>
+                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
                           {getStatusIcon(order.status)}
                           <span className="ml-1 capitalize">{order.status}</span>
                         </span>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Mobile-optimized content */}
+                    <div className="space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-4">
+                      {/* Items Section */}
                       <div>
-                        <h4 className="font-medium text-gray-900 mb-2">Items</h4>
+                        <h4 className="font-medium text-gray-900 mb-2 text-sm sm:text-base">Items</h4>
                         <div className="space-y-2">
                           {order.items.map((item, index) => (
-                            <div key={index} className="flex items-center space-x-3">
-                              <div className="relative w-10 h-10">
+                            <div key={index} className="flex items-center space-x-2 sm:space-x-3">
+                              <div className="relative w-8 h-8 sm:w-10 sm:h-10 flex-shrink-0">
                                 <Image
                                   src={item.product.image}
                                   alt={item.product.name}
@@ -204,11 +211,13 @@ export default function DashboardPage() {
                                   className="object-cover rounded"
                                 />
                               </div>
-                              <div className="flex-1">
-                                <p className="text-sm font-medium text-gray-900">{item.product.name}</p>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-xs sm:text-sm font-medium text-gray-900 truncate">
+                                  {item.product.name}
+                                </p>
                                 <p className="text-xs text-gray-600">Qty: {item.quantity}</p>
                               </div>
-                              <p className="text-sm font-medium text-gray-900">
+                              <p className="text-xs sm:text-sm font-medium text-gray-900 flex-shrink-0">
                                 {formatPrice(item.product.price * item.quantity)}
                               </p>
                             </div>
@@ -216,12 +225,23 @@ export default function DashboardPage() {
                         </div>
                       </div>
 
-                      <div>
-                        <h4 className="font-medium text-gray-900 mb-2">Tracking</h4>
-                        <p className="text-sm text-gray-600">Tracking ID: {order.trackingId}</p>
-                        {order.status === 'delivered' && (
-                          <p className="text-sm text-green-600 mt-2">✓ Delivered successfully</p>
-                        )}
+                      {/* Tracking Section */}
+                      <div className="mt-4 sm:mt-0">
+                        <h4 className="font-medium text-gray-900 mb-2 text-sm sm:text-base">Tracking</h4>
+                        <div className="space-y-1">
+                          <p className="text-xs sm:text-sm text-gray-600 break-all">
+                            ID: {order.trackingId}
+                          </p>
+                          {order.status === 'delivered' && (
+                            <p className="text-xs sm:text-sm text-green-600">✓ Delivered successfully</p>
+                          )}
+                          {order.status === 'processing' && (
+                            <p className="text-xs sm:text-sm text-blue-600">🚚 Being prepared for shipment</p>
+                          )}
+                          {order.status === 'pending' && (
+                            <p className="text-xs sm:text-sm text-yellow-600">⏳ Order confirmed, processing...</p>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
