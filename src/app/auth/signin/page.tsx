@@ -9,9 +9,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
-// Force dynamic rendering for auth pages
-export const dynamic = 'force-dynamic'
-
 function SignInForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -134,50 +131,6 @@ function SignInForm() {
 }
 
 export default function SignIn() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [successMessage, setSuccessMessage] = useState('')
-  const router = useRouter()
-  const searchParams = useSearchParams()
-
-  useEffect(() => {
-    const message = searchParams.get('message')
-    if (message) {
-      setSuccessMessage(message)
-    }
-  }, [searchParams])
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError('')
-
-    try {
-      const result = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
-      })
-
-      if (result?.error) {
-        setError('Invalid email or password')
-      } else {
-        const session = await getSession()
-        if (session?.user?.role === 'admin') {
-          router.push('/admin/dashboard')
-        } else {
-          router.push('/dashboard')
-        }
-      }
-    } catch (error) {
-      setError('An error occurred. Please try again.')
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-farm-green-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
