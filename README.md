@@ -186,4 +186,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Developed by Ojoh Peters 
+**Developed by Utile Dorcas
