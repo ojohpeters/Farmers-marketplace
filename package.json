@@ -12,30 +12,30 @@
   "dependencies": {
     "@types/multer": "^2.0.0",
     "bcryptjs": "^2.4.3",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.0.0",
-    "lucide-react": "^0.294.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.468.0",
     "mongodb": "^6.20.0",
     "mongoose": "^8.19.1",
     "multer": "^2.0.2",
-    "next": "14.0.0",
+    "next": "14.2.18",
     "next-auth": "^4.24.5",
-    "react": "^18",
-    "react-dom": "^18",
-    "recharts": "^2.8.0",
-    "tailwind-merge": "^2.0.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.15.0",
+    "tailwind-merge": "^2.5.5"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "autoprefixer": "^10.0.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.0.0",
-    "postcss": "^8",
-    "tailwindcss": "^3.3.0",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "14.2.18",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.17",
     "tsx": "^4.20.6",
-    "typescript": "^5"
+    "typescript": "^5.7.2"
   }
 }
