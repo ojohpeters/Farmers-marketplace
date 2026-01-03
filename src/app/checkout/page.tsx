@@ -146,8 +146,14 @@ export default function CheckoutPage() {
             <CardContent className="p-0">
               {/* Paystack Branding Header */}
               <div className="bg-gradient-to-r from-purple-600 to-purple-700 p-6 text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-full mb-4">
-                  <span className="text-purple-600 font-bold text-2xl">P</span>
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-full mb-4 p-2">
+                  <Image
+                    src="/logo.png"
+                    alt="Logo"
+                    width={48}
+                    height={48}
+                    className="object-contain"
+                  />
                 </div>
                 <div className="text-white text-sm font-medium">Powered by Paystack</div>
               </div>
@@ -332,8 +338,14 @@ export default function CheckoutPage() {
                 <CardHeader className="bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-t-lg">
                   <div className="flex items-center justify-between">
                     <CardTitle className="flex items-center text-white">
-                      <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center mr-3">
-                        <span className="text-purple-600 font-bold text-lg">P</span>
+                      <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center mr-3 overflow-hidden">
+                        <Image
+                          src="/logo.png"
+                          alt="Logo"
+                          width={32}
+                          height={32}
+                          className="object-contain"
+                        />
                       </div>
                       Paystack
                     </CardTitle>
@@ -458,7 +470,12 @@ export default function CheckoutPage() {
 
                         <div className="bg-white rounded-lg p-4 border border-gray-200">
                           <Label className="text-xs text-gray-500 mb-1 block">Bank Name</Label>
-                          <span className="text-lg font-semibold text-gray-900">Any Bank</span>
+                          <span className="text-lg font-semibold text-gray-900">First Bank</span>
+                        </div>
+
+                        <div className="bg-white rounded-lg p-4 border border-gray-200">
+                          <Label className="text-xs text-gray-500 mb-1 block">Account Name</Label>
+                          <span className="text-lg font-semibold text-gray-900">Utille dorcas</span>
                         </div>
 
                         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
